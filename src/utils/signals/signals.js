@@ -1,5 +1,3 @@
-exports.WEAK_SIGNAL_THRESHOLD = 0.2;
-exports.STRONG_SIGNAL_THRESHOLD = 0.7;
 exports.SIGNALS = {
   STRONG_BUY: "STRONG_BUY",
   BUY: "BUY",
@@ -13,4 +11,8 @@ exports.SIGNAL_WEIGHTS = {
   HOLD: 1,
   SELL: 2,
   STRONG_SELL: 2.5,
+};
+exports.SIGNAL_RELIABILITY_THRESHOLDS = {
+  strong: 0.7,
+  moderate: 0.55,
 };

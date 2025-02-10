@@ -1,8 +1,7 @@
 const { 
   SIGNALS,
   SIGNAL_WEIGHTS,
-  WEAK_SIGNAL_THRESHOLD,
-  STRONG_SIGNAL_THRESHOLD,
+  SIGNAL_RELIABILITY_THRESHOLDS,
   INDICATOR_WEIGHTS,
 } = require("../../utils");
 
@@ -32,7 +31,7 @@ class SignalSynthesizer {
     let totalWeight = 0;
 
     for (const [indicator, signal] of Object.entries(signals)) {
-      const indicatorWeight = INDICATOR_WEIGHTS[indicator] ?? 1;
+      const indicatorWeight = INDICATOR_WEIGHTS[indicator] ?? 0;
       const signalWeight = SIGNAL_WEIGHTS[signal] ?? 0;
 
       scores[signal] += indicatorWeight * signalWeight;
@@ -43,49 +42,71 @@ class SignalSynthesizer {
   }
 
   /**
-   * Resolves conflicts between multiple signals using a threshold-based
-   * approach. The function normalizes scores to prevent bias from
-   * dominant indicators.
+   * Resolves conflicts between multiple trading signals using a weighted
+   * approach. The function normalizes scores to ensure balanced
+   * decision-making and prevents bias from dominant indicators.
    *
    * @private
    * @static
-   * @param {object} scores - The score assigned to each signal type.
+   * @param {object} scores - The scores assigned to each signal type.
    * @param {number} totalWeight - The total weight of all indicators.
-   * @returns {string} The final trading signal.
+   * @returns {string} The final trading signal after resolving conflicts.
    */
   static #resolveContradictions(scores, totalWeight) {
-    if (totalWeight === 0) { // Safety check
-      return SIGNALS.HOLD;
+    if (totalWeight === 0) {
+      return SIGNALS.HOLD; // Safety check
     }
 
-    // Normalize scores to ensure fair weighting
+    // Normalize scores to prevent bias from dominant indicators
     const normalizedScores = Object.fromEntries(
       Object.entries(scores).map(([key, value]) => [key, value / totalWeight])
     );
 
-    if (normalizedScores.STRONG_BUY > STRONG_SIGNAL_THRESHOLD) {
+    const { STRONG_BUY, BUY, HOLD, SELL, STRONG_SELL } = normalizedScores;
+
+    // 1. Hold suggestion
+    if (HOLD > Math.max(STRONG_BUY, BUY, SELL, STRONG_SELL)) {
+      return SIGNALS.HOLD;
+    }
+
+    // 2. Prioritize strong signals if they are greater than all other signals
+    if (
+      STRONG_BUY >= SIGNAL_RELIABILITY_THRESHOLDS.strong &&
+      STRONG_BUY > Math.max(BUY, HOLD, SELL, STRONG_SELL)
+    ) {
       return SIGNALS.STRONG_BUY;
     }
 
-    if (normalizedScores.STRONG_SELL > STRONG_SIGNAL_THRESHOLD) {
+    if (
+      STRONG_SELL >= SIGNAL_RELIABILITY_THRESHOLDS.strong &&
+      STRONG_SELL > Math.max(SELL, HOLD, BUY, STRONG_BUY)
+    ) {
       return SIGNALS.STRONG_SELL;
     }
 
+    // 3. Indecision between buy and sell
+    if (BUY === SELL) {
+      return SIGNALS.HOLD;
+    }
+
+    // 4. The buy signal is stronger than the hold and sell signals
     if (
-      normalizedScores.BUY > normalizedScores.SELL &&
-      normalizedScores.BUY > WEAK_SIGNAL_THRESHOLD
+      BUY >= SIGNAL_RELIABILITY_THRESHOLDS.moderate &&
+      BUY > Math.max(HOLD, SELL)
     ) {
       return SIGNALS.BUY;
     }
 
+    // 5. The sell signal is stronger than the hold and buy signals
     if (
-      normalizedScores.SELL > normalizedScores.BUY &&
-      normalizedScores.SELL > WEAK_SIGNAL_THRESHOLD
+      SELL >= SIGNAL_RELIABILITY_THRESHOLDS.moderate &&
+      SELL > Math.max(HOLD, BUY)
     ) {
       return SIGNALS.SELL;
     }
 
-    return SIGNALS.HOLD; // Default fallback
+    // 6. Signals are weak or contradict each other
+    return SIGNALS.HOLD;
   }
 }
 
