@@ -1,3 +1,12 @@
+<!-- markdownlint-disable no-duplicate-heading -->
+# 1.0.1 (2025-02-10)
+
+## Fixes
+
+* ta-engine: fix trades scorer
+* indicators: fix indicator signals
+* synthesizer: fix contradictions resolver
+
 # 1.0.0 (2025-02-09)
 
 ## Change Log
