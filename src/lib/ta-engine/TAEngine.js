@@ -70,12 +70,13 @@ class TAEngine {
     const { atr, bollinger } = indicators;
     const volatility = computeVolatility(atr.value, bollinger.value);
     const delta = computePriceMovement(atr.value, volatility);
+    const bullishSignals = [SIGNALS.BUY, SIGNALS.STRONG_BUY];
 
     if (signal === SIGNALS.HOLD) {
       return lastPrice;
     }
 
-    if (signal === SIGNALS.BUY || signal === SIGNALS.STRONG_BUY) {
+    if (bullishSignals.includes(signal)) {
       return Math.max(lastPrice + delta, 0);
     }
 
@@ -92,12 +93,13 @@ class TAEngine {
   #calculateStopLoss(rrr = 3/2) {
     const { lastPrice, signal } = this.tradingPair;
     const delta = Math.abs((this.takeProfit - lastPrice)) / rrr;
+    const bullishSignals = [SIGNALS.BUY, SIGNALS.STRONG_BUY];
 
     if (signal === SIGNALS.HOLD) {
       return lastPrice;
     }
 
-    if (signal === SIGNALS.BUY || signal === SIGNALS.STRONG_BUY) {
+    if (bullishSignals.includes(signal)) {
       return Math.max(lastPrice - delta, 0);
     }
 
@@ -123,8 +125,8 @@ class TAEngine {
 
     // EMA
     if (
-      (bullish && lastPrice > ema.value) ||
-      (bearish && lastPrice < ema.value)
+      (bullish && lastPrice < ema.value) ||
+      (bearish && lastPrice > ema.value)
     ) {
       score += INDICATOR_WEIGHTS.ema;
     }
@@ -138,22 +140,22 @@ class TAEngine {
     }
 
     // ADX
-    if (adx.value.adx >= ADX_THRESHOLDS.moderateTrend) {
+    if (adx.value.adx >= ADX_THRESHOLDS.strongTrend) {
       score += INDICATOR_WEIGHTS.adx;
     }
 
     // RSI
     if (
-      (bullish && rsi.value < RSI_THRESHOLDS.buy) ||
-      (bearish && rsi.value > RSI_THRESHOLDS.sell)
+      (bullish && rsi.value <= RSI_THRESHOLDS.sold) ||
+      (bearish && rsi.value >= RSI_THRESHOLDS.bought)
     ) {
       score += INDICATOR_WEIGHTS.rsi;
     }
 
     // Stochastic RSI
     if (
-      (bullish && stochRSI.value.stochRSI < STOCH_RSI_THRESHOLDS.oversold) ||
-      (bearish && stochRSI.value.stochRSI > STOCH_RSI_THRESHOLDS.overbought)
+      (bullish && stochRSI.value.stochRSI <= STOCH_RSI_THRESHOLDS.sold) ||
+      (bearish && stochRSI.value.stochRSI >= STOCH_RSI_THRESHOLDS.bought)
     ) {
       score += INDICATOR_WEIGHTS.stochRSI;
     }
