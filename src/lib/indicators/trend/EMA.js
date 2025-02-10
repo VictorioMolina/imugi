@@ -51,23 +51,28 @@ class EMA extends Indicator {
     const ema = this.value;
     const diff = price - ema;
 
-    if (diff >= threshold) {
+    // Price is significantly below the EMA, indicating oversold
+    if (diff <= -threshold) {
       return SIGNALS.STRONG_BUY;
     }
 
-    if (diff > 0) {
+    // Price is slightly below the EMA, suggesting a buying opportunity
+    if (diff < 0 && diff >= -threshold / 2) {
       return SIGNALS.BUY;
     }
 
-    if (Math.abs(diff) <= threshold) {
-      return SIGNALS.HOLD;
+    // Price is slightly above the EMA, suggesting a selling opportunity
+    if (diff > 0 && diff <= threshold / 2) {
+      return SIGNALS.SELL;
     }
 
-    if (diff <= -threshold) {
+    // Price is significantly above the EMA, indicating overbought
+    if (diff >= threshold) {
       return SIGNALS.STRONG_SELL;
     }
 
-    return SIGNALS.SELL;
+    // Price is very close to the EMA, indicating no strong trend
+    return SIGNALS.HOLD;
   }
 }
 

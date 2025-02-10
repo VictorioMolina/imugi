@@ -48,11 +48,27 @@ class RSI extends Indicator {
   signal(thresholds = RSI_THRESHOLDS) {
     const rsi = this.value;
 
-    if (rsi < thresholds.strongBuy) return SIGNALS.STRONG_BUY;
-    if (rsi < thresholds.buy) return SIGNALS.BUY;
-    if (rsi > thresholds.strongSell) return SIGNALS.STRONG_SELL;
-    if (rsi > thresholds.sell) return SIGNALS.SELL;
+    // RSI is significantly low, indicating oversold
+    if (rsi <= thresholds.oversold) {
+      return SIGNALS.STRONG_BUY;
+    }
 
+    // RSI is quite low, suggesting a buy opportunity
+    if (rsi <= thresholds.sold) {
+      return SIGNALS.BUY;
+    }
+
+    // RSI is significantly high, indicating overbought
+    if (rsi >= thresholds.overbought) {
+      return SIGNALS.STRONG_SELL;
+    }
+
+    // RSI is quite high, suggesting a sell opportunity
+    if (rsi >= thresholds.bought) {
+      return SIGNALS.SELL;
+    }
+
+    // RSI is within a neutral range, suggesting a hold position
     return SIGNALS.HOLD;
   }
 }

@@ -50,20 +50,24 @@ class MACD extends Indicator {
   /**
    * Analyzes the MACD indicator and returns the corresponding trading signal.
    *
+   * @todo Avoid using a static threshold.
    * @param {number} [threshold=0.05] - Threshold used to define a strong signal.
    * @returns {string} The signal based on the MACD.
    */
   signal(threshold = MACD_THRESHOLD) {
     const { macd, signal, histogram } = this.value;
 
+    // MACD is above the signal line, indicating upward momentum
     if (macd > signal) {
       return histogram > threshold ? SIGNALS.STRONG_BUY : SIGNALS.BUY;
     }
 
+    // MACD is below the signal line, indicating downward momentum
     if (macd < signal) {
       return histogram < -threshold ? SIGNALS.STRONG_SELL : SIGNALS.SELL;
     }
 
+    // No clear direction
     return SIGNALS.HOLD;
   }
 }

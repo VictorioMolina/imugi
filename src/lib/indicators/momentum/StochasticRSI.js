@@ -49,37 +49,30 @@ class StochasticRSI extends Indicator {
    */
   signal(thresholds = STOCH_RSI_THRESHOLDS) {
     const { stochRSI, k, d } = this.value;
+    const bullishMomentum = k > d;
+    const bearishMomentum = k < d;
 
-    if (
-      k < d &&
-      k < thresholds.strongOversold &&
-      stochRSI < thresholds.oversold
-    ) {
-      return SIGNALS.STRONG_SELL;
-    }
-
-    if (
-      (k < d && stochRSI > thresholds.overbought) ||
-      stochRSI > thresholds.overbought
-    ) {
-      return SIGNALS.SELL;
-    }
-  
-    if (
-      (k > d && stochRSI < thresholds.oversold) ||
-      stochRSI < thresholds.oversold
-    ) {
-      return SIGNALS.BUY;
-    }
-  
-    if (
-      k > d &&
-      k > thresholds.strongOversold &&
-      stochRSI < thresholds.oversold
-    ) {
+    // RSI in extreme oversold territory, suggesting a strong buy
+    if (bullishMomentum && stochRSI <= thresholds.oversold) {
       return SIGNALS.STRONG_BUY;
     }
 
+    // RSI in oversold territory, suggesting a buy opportunity
+    if (bullishMomentum && stochRSI <= thresholds.sold) {
+      return SIGNALS.BUY;
+    }
+
+    // RSI in extreme overbought territory, suggesting a strong sell
+    if (bearishMomentum && stochRSI >= thresholds.overbought) {
+      return SIGNALS.STRONG_SELL;
+    }
+
+    // RSI in overbought territory, suggesting a sell opportunity
+    if (bearishMomentum && stochRSI >= thresholds.bought) {
+      return SIGNALS.SELL;
+    }
+
+    // No strong momentum or no significant conditions
     return SIGNALS.HOLD;
   }
 }

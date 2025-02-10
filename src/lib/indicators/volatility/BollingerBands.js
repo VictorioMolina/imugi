@@ -1,7 +1,7 @@
 const indicators = require("technicalindicators");
 
 const Indicator = require("../Indicator");
-const { SIGNALS, BOLLINGER_BANDS_THRESHOLD } = require("../../../utils");
+const { SIGNALS, BOLLINGER_ZONE_THRESHOLD } = require("../../../utils");
 
 /**
  * The Bollinger Bands indicator is used to measure market volatility and 
@@ -61,33 +61,38 @@ class BollingerBands extends Indicator {
    * @param {number} price - The last price of the trading pair,
    *   used to compare with the Bollinger Bands to determine the
    *   trading action.
-   * @param {number} [threshold=0.15] - A value between 0 and 1 that represents 
+   * @param {number} [threshold=0.1] - A value between 0 and 1 that represents 
    *   the percentage of the total band width used to define the zone within
    *   which the price will trigger a signal. 
    * @returns {string} The signal based on the current Bollinger Bands.
    */
-  signal(price, threshold = BOLLINGER_BANDS_THRESHOLD) {
+  signal(price, threshold = BOLLINGER_ZONE_THRESHOLD) {
     const { upperBand, lowerBand } = this.value;
     const bandWidth = upperBand - lowerBand;
     const lowerBandZone = lowerBand + bandWidth * threshold;
     const upperBandZone = upperBand - bandWidth * threshold;
 
+    // Price is significantly below the lower band, indicating oversold
     if (price <= lowerBand) {
-      return SIGNALS.STRONG_BUY; 
+      return SIGNALS.STRONG_BUY;
     }
 
+    // Price is near the lower band, suggesting a buy opportunity
     if (price <= lowerBandZone) {
       return SIGNALS.BUY;
     }
 
+    // Price is significantly above the upper band, indicating overbought
     if (price >= upperBand) {
       return SIGNALS.STRONG_SELL;
     }
 
+    // Price is near the upper band, suggesting a sell opportunity
     if (price >= upperBandZone) {
       return SIGNALS.SELL;
     }
 
+    // Price is within a neutral range, suggesting no immediate action
     return SIGNALS.HOLD;
   }
 }

@@ -66,32 +66,31 @@ class ADX extends Indicator {
    * @returns {string} The signal based on the ADX.
    */
   signal(thresholds = ADX_THRESHOLDS) {
-    const { adx, pdi, mdi } = this.value;
+    const { adx, pdi, mdi } = this.value; 
+    const bullishTrend = pdi > mdi;
+    const bearishTrend = pdi < mdi;
 
-    if (adx >= thresholds.strongTrend && pdi > mdi) {
+    // Strong and bullish trend, suggesting a strong buy opportunity
+    if (bullishTrend && adx >= thresholds.strongTrend) {
       return SIGNALS.STRONG_BUY;
     }
-  
-    if (
-      adx >= thresholds.moderateTrend &&
-      adx < thresholds.strongTrend &&
-      pdi > mdi
-    ) {
+
+    // Moderate and bullish trend, suggesting a buy opportunity
+    if (bullishTrend && adx >= thresholds.moderateTrend) {
       return SIGNALS.BUY;
     }
-  
-    if (
-      adx >= thresholds.moderateTrend &&
-      adx < thresholds.strongTrend &&
-      mdi > pdi
-    ) {
-      return SIGNALS.SELL;
-    }
-  
-    if (adx >= thresholds.strongTrend && mdi > pdi) {
+
+    // Strong and bearish trend, suggesting a strong sell opportunity
+    if (bearishTrend  && adx >= thresholds.strongTrend) {
       return SIGNALS.STRONG_SELL;
     }
 
+    // Moderate a bearish trend, suggesting a sell opportunity
+    if (bearishTrend && adx >= thresholds.moderateTrend) {
+      return SIGNALS.SELL;
+    }
+
+    // Weak or no clear trend
     return SIGNALS.HOLD;
   }
 }
