@@ -24,11 +24,11 @@ class MarketBot {
     const longsCount = trades.filter(({ signal }) => bullishSignals.includes(signal)).length;
     const holdCount = trades.filter(({ signal }) => signal === neutralSignal).length;
 
-    if (shortsCount >= longsCount && shortsCount >= holdCount) {
+    if (shortsCount > longsCount + holdCount) {
       return MARKET_SENTIMENT.BEARISH;
     }
 
-    if (longsCount >= shortsCount && longsCount >= holdCount) {
+    if (longsCount >= shortsCount) {
       return MARKET_SENTIMENT.BULLISH;
     }
 
