@@ -37,7 +37,7 @@ class Logger {
    * Logs a table with the market sentiment and the selected interval.
    *
    * @static
-   * @param {string} interval - The time interval (e.g., '1h', '30m', '5m').
+   * @param {string} interval - The time interval (e.g., "1h", "30m", "5m").
    * @param {string} marketSentiment - The current market sentiment.
    * @returns {void}
    */
