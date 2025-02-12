@@ -1,3 +1,4 @@
+/* eslint-disable padding-line-between-statements */
 const express = require("express");
 const app = express();
 const port = 3000;
@@ -11,6 +12,7 @@ app.get("/signals", async (req, res) => {
 
   try {
     console.clear();
+
     Logger.logBanner();
 
     console.log(`🔥 Concurrently analyzing ${symbols.length} pairs\n`);
@@ -37,7 +39,11 @@ app.get("/signals", async (req, res) => {
     res.json({ success: true });
   } catch (error) {
     console.error("Error generating crypto signals:", error);
-    res.status(500).json({ success: false, error: "Failed to generate signals" });
+
+    res.status(500).json({
+      success: false,
+      error: "Failed to generate signals",
+    });
   }
 });
 

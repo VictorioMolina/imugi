@@ -8,7 +8,7 @@ const { SIGNALS, STOCH_RSI_THRESHOLDS } = require("../../../utils");
  * identify overbought or oversold conditions in a market. It combines the
  * concepts of the RSI with the stochastic oscillator to provide a more
  * sensitive reading of overbought and oversold levels.
- * 
+ *
  * @class
  * @extends {Indicator}
  */
@@ -28,7 +28,7 @@ class StochasticRSI extends Indicator {
   /**
    * Calculates the Stochastic RSI.
    *
-   * @returns {object} The most recent %K, %D, and Stochastic RSI values.
+   * @return {object} The most recent %K, %D, and Stochastic RSI values.
    */
   _calculate() {
     const input = { values: this.values, ...this.params };
@@ -45,7 +45,7 @@ class StochasticRSI extends Indicator {
    * custom thresholds.
    *
    * @param {object} [thresholds] - Thresholds for the Stochastic RSI signal.
-   * @returns {string} The signal based on the Stochastic RSI.
+   * @return {string} The signal based on the Stochastic RSI.
    */
   signal(thresholds = STOCH_RSI_THRESHOLDS) {
     const { stochRSI, k, d } = this.value;

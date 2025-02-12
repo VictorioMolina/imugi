@@ -3,7 +3,7 @@
  * candlesticks, ensuring that the data is properly aligned for analysis.
  *
  * @param {object[]} candles - The pair candles.
- * @returns {object}
+ * @return {object}
  *   An object containing:
  *   - closes: An array of closing prices from the candles.
  *   - highs: An array of high prices from the candles.

@@ -1,3 +1,5 @@
+/* eslint-disable max-len */
+
 /**
  * Static class for logging various types of information, including the
  * software description, market sentiment, and trade details, in a structured
@@ -8,9 +10,9 @@
 class Logger {
   /**
    * Logs a banner with the software description.
-   * 
+   *
    * @static
-   * @returns {void}
+   * @return {void}
    */
   static logBanner() {
     console.log("\n                              ______________                               ");
@@ -32,14 +34,13 @@ class Logger {
     console.log("      Analyzes multiple trading pairs and provides trading recommendations.\n\n");
   }
 
-
   /**
    * Logs a table with the market sentiment and the selected interval.
    *
    * @static
    * @param {string} interval - The time interval (e.g., "1h", "30m", "5m").
    * @param {string} marketSentiment - The current market sentiment.
-   * @returns {void}
+   * @return {void}
    */
   static logSentiment(interval, marketSentiment) {
     console.log("+----------------------+----------------------+");
@@ -54,7 +55,7 @@ class Logger {
    *
    * @static
    * @param {object} trade - The trade object containing trade information.
-   * @returns {void}
+   * @return {void}
    */
   static logTrade(trade) {
     console.log("+----------------------+----------------------+");
@@ -76,10 +77,10 @@ class Logger {
 
   /**
    * Logs all the given trades.
-   * 
+   *
    * @static
    * @param {object[]} trades - List of trades to be logged.
-   * @returns {void}
+   * @return {void}
    */
   static logTrades(trades) {
     trades.forEach(Logger.logTrade);

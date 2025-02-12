@@ -5,5 +5,5 @@ const computeVolatility = require("./computeVolatility");
 module.exports = {
   clampScore,
   computePriceMovement,
-  computeVolatility
+  computeVolatility,
 };

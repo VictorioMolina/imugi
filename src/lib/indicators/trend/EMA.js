@@ -1,3 +1,4 @@
+/* eslint-disable new-cap */
 const indicators = require("technicalindicators");
 
 const Indicator = require("../Indicator");
@@ -6,7 +7,7 @@ const { SIGNALS, EMA_THRESHOLD } = require("../../../utils");
 /**
  * The EMA is a weighted moving average that gives more importance to recent
  * price data. It is used to identify trends and momentum in the market.
- * 
+ *
  * @class
  * @extends {Indicator}
  */
@@ -26,7 +27,7 @@ class EMA extends Indicator {
   /**
    * Calculates the Exponential Moving Average (EMA).
    *
-   * @returns {number} The most recent EMA value.
+   * @return {number} The most recent EMA value.
    */
   _calculate() {
     const input = { values: this.values, ...this.params };
@@ -39,13 +40,13 @@ class EMA extends Indicator {
   /**
    * Analyzes the Exponential Moving Average (EMA) indicator and returns the
    * corresponding trading signal.
-   * 
+   *
    * This function compares the current price to the EMA and determines a
    * signal based on their relationship.
    *
    * @param {number} price - The last price of the trading pair.
    * @param {number} [threshold] - Threshold for the EMA signal.
-   * @returns {string} The signal based on the EMA.
+   * @return {string} The signal based on the EMA.
    */
   signal(price, threshold = EMA_THRESHOLD(price)) {
     const ema = this.value;

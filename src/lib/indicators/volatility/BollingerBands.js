@@ -4,16 +4,16 @@ const Indicator = require("../Indicator");
 const { SIGNALS, BOLLINGER_ZONE_THRESHOLD } = require("../../../utils");
 
 /**
- * The Bollinger Bands indicator is used to measure market volatility and 
+ * The Bollinger Bands indicator is used to measure market volatility and
  * identify overbought or oversold conditions. It consists of three lines:
- * 
+ *
  * 1. Upper Band: A moving average (usually 20 periods) plus a specified
  *    number of standard deviations above it.
  *
- * 2. Lower Band: A moving average minus the same number of standard 
+ * 2. Lower Band: A moving average minus the same number of standard
  *    deviations.
  *
- * 3. Middle Band: The simple moving average (SMA) itself, typically 20 
+ * 3. Middle Band: The simple moving average (SMA) itself, typically 20
  *    periods.
  *
  * Bollinger Bands expand when the market is volatile and contract during
@@ -40,7 +40,7 @@ class BollingerBands extends Indicator {
   /**
    * Calculates the Bollinger Bands for a given set of values.
    *
-   * @returns {object} The most recent upper and lower Bollinger Bands.
+   * @return {object} The most recent upper and lower Bollinger Bands.
    */
   _calculate() {
     const input = { values: this.values, ...this.params };
@@ -61,10 +61,10 @@ class BollingerBands extends Indicator {
    * @param {number} price - The last price of the trading pair,
    *   used to compare with the Bollinger Bands to determine the
    *   trading action.
-   * @param {number} [threshold=0.1] - A value between 0 and 1 that represents 
+   * @param {number} [threshold=0.1] - A value between 0 and 1 that represents
    *   the percentage of the total band width used to define the zone within
-   *   which the price will trigger a signal. 
-   * @returns {string} The signal based on the current Bollinger Bands.
+   *   which the price will trigger a signal.
+   * @return {string} The signal based on the current Bollinger Bands.
    */
   signal(price, threshold = BOLLINGER_ZONE_THRESHOLD) {
     const { upperBand, lowerBand } = this.value;

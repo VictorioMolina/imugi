@@ -13,9 +13,9 @@ const {
 } = require("../indicators");
 
 /**
- * Represents a trading pair, encapsulating its market data and indicators 
+ * Represents a trading pair, encapsulating its market data and indicators
  * for technical analysis.
- * 
+ *
  * @class
  */
 class TradingPair {
@@ -44,9 +44,9 @@ class TradingPair {
   /**
    * Initializes the trading pair by fetching market data and
    * setting up indicators.
-   * 
+   *
    * @async
-   * @returns {Promise<void>}
+   * @return {Promise<void>}
    * @throws Cannot initialize a trading pair twice.
    */
   async initialize() {
@@ -57,7 +57,7 @@ class TradingPair {
     // Fetch the pair data from Binance
     const { avgPrice, lastPrice, candles } = await fetchTradingPair(
       this.symbol,
-      this.interval,
+      this.interval
     );
 
     // Extract all price levels
@@ -76,9 +76,9 @@ class TradingPair {
 
   /**
    * Initializes trend-based indicators.
-   * 
+   *
    * @private
-   * @returns {void}
+   * @return {void}
    */
   #initializeTrendIndicators() {
     const { ema, macd, adx } = this.#indicatorParams;
@@ -90,9 +90,9 @@ class TradingPair {
 
   /**
    * Initializes momentum-based indicators.
-   * 
+   *
    * @private
-   * @returns {void}
+   * @return {void}
    */
   #initializeMomentumIndicators() {
     const { rsi, stochRSI } = this.#indicatorParams;
@@ -105,7 +105,7 @@ class TradingPair {
    * Initializes volatility-based indicators.
    *
    * @private
-   * @returns {void}
+   * @return {void}
    */
   #initializeVolatilityIndicators() {
     const { atr, bollinger } = this.#indicatorParams;
@@ -116,9 +116,9 @@ class TradingPair {
 
   /**
    * Initializes all indicators for the trading pair.
-   * 
+   *
    * @private
-   * @returns {void}
+   * @return {void}
    */
   #initializeIndicators() {
     this.#initializeTrendIndicators();
@@ -128,9 +128,9 @@ class TradingPair {
 
   /**
    * Synthesizes the final trading signal from individual technical indicators.
-   * 
+   *
    * @private
-   * @returns {void}
+   * @return {void}
    */
   #synthesizeSignal() {
     const signals = {

@@ -13,12 +13,12 @@
  * @param {number} atr - The Average True Range (ATR).
  * @param {object} bollinger - The Bollinger Bands.
  * @param {number} [smoothFactor=1/3] - Smoothing factor.
- * @returns {number} The volatility factor, which quantifies the relative
+ * @return {number} The volatility factor, which quantifies the relative
  *   volatility of the market. A higher value indicates higher volatility,
  *   and a lower value suggests lower volatility.
  */
 module.exports = (atr, bollinger, smoothFactor = 1 / 3) => {
   const bandWidth = bollinger.upperBand - bollinger.lowerBand;
 
-  return (bandWidth / atr) * smoothFactor;
-}
+  return bandWidth / atr * smoothFactor;
+};
