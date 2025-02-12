@@ -40,23 +40,38 @@ class MarketBot {
    *
    * @static
    * @async
-   * @param {string} interval - The time interval to analyze (e.g., '1h', '30m').
+   * @param {string} interval - The time interval to analyze (e.g., "1h", "30m").
    * @returns {Promise<object[]>} A promise that fulfills with the trading analysis.
    */
   static async computeTrades(interval) {
     const results = await Promise.allSettled(
-      symbols.map(async (symbol) => {
-        const pair = new TradingPair(symbol, interval);
-        await pair.initialize();
-
-        const ta = new TAEngine(pair);
-        return ta.analyze();
-      })
+      symbols.map(
+        (symbol) => this.computeTrade(symbol, interval)
+      )
     );
 
     return results
       .filter((result) => result.status === "fulfilled")
       .map((result) => result.value);
+  }
+
+  /**
+   * Computes a trade for the given symbol and time interval.
+   *
+   * @static
+   * @async
+   * @param {string} symbol - The trading pair symbol (e.g., "BTCUSDT").
+   * @param {string} interval - The time interval to analyze (e.g., "1h", "30m").
+   * @returns {Promise<object>} A promise that fulfills with the computed trade.
+   */
+  static async computeTrade(symbol, interval) {
+    const pair = new TradingPair(symbol, interval);
+    await pair.initialize();
+
+    const ta = new TAEngine(pair);
+    const analysis = await ta.analyze();
+
+    return analysis;
   }
 
   /**
