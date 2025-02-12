@@ -1,4 +1,19 @@
 <!-- markdownlint-disable no-duplicate-heading -->
+# 1.0.2 (2025-02-12)
+
+## Chore
+
+* symbols: remove old fashioned trades
+
+## Fixes
+
+* market sentiment: improve sentiment computation logic
+
+## Refactoring
+
+* market-bot: separate logic into multiple atomic methods
+* logger: clean jsdoc comments
+
 # 1.0.1 (2025-02-10)
 
 ## Fixes
