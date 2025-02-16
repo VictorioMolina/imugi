@@ -3,15 +3,15 @@
 
 ## Feature
 
-* feat(ichimoku): add Ichimoku Cloud indicator
+* ichimoku: add Ichimoku Cloud indicator
 
 ## Refactoring
 
-* lint(code): integrate eslint
+* code: integrate eslint
 
 ## Documentation
 
-* docs(roadmap): create to-do list
+* roadmap: create to-do list
 
 # 1.0.2 (2025-02-12)
 
