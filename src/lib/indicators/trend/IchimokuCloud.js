@@ -46,7 +46,7 @@ class IchimokuCloud extends Indicator {
   /**
    * Calculates the Ichimoku Cloud indicator components.
    *
-   * @returns {object} The most recent Ichimoku Cloud properties.
+   * @return {object} The most recent Ichimoku Cloud properties.
    */
   _calculate() {
     const input = { high: this.high, low: this.low, ...this.params };
@@ -67,12 +67,12 @@ class IchimokuCloud extends Indicator {
 
   /**
    * Analyzes the Ichimoku Cloud indicator and returns a trading signal.
-   * 
-   * The signal is determined based on the relative positions of the 
+   *
+   * The signal is determined based on the relative positions of the
    * Tenkan-sen, Kijun-sen, Senkou Span A & B, and Chikou Span.
    *
    * @param {number} price - The last price of the trading pair.
-   * @returns {string} The signal based on Ichimoku.
+   * @return {string} The signal based on Ichimoku.
    */
   signal(price) {
     const {

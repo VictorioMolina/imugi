@@ -13,16 +13,21 @@ class MarketBot {
    *
    * @static
    * @param {object[]} trades - List of trades to analyze.
-   * @returns {string} The market sentiment.
+   * @return {string} The market sentiment.
    */
   static computeSentiment(trades) {
     const bearishSignals = [SIGNALS.STRONG_SELL, SIGNALS.SELL];
     const bullishSignals = [SIGNALS.STRONG_BUY, SIGNALS.BUY];
     const neutralSignal = SIGNALS.HOLD;
 
-    const shortsCount = trades.filter(({ signal }) => bearishSignals.includes(signal)).length;
-    const longsCount = trades.filter(({ signal }) => bullishSignals.includes(signal)).length;
-    const holdCount = trades.filter(({ signal }) => signal === neutralSignal).length;
+    const shortsCount =
+      trades.filter(({ signal }) => bearishSignals.includes(signal)).length;
+
+    const longsCount =
+      trades.filter(({ signal }) => bullishSignals.includes(signal)).length;
+
+    const holdCount =
+      trades.filter(({ signal }) => signal === neutralSignal).length;
 
     if (shortsCount > longsCount + holdCount) {
       return MARKET_SENTIMENT.BEARISH;
@@ -40,8 +45,9 @@ class MarketBot {
    *
    * @static
    * @async
-   * @param {string} interval - The time interval to analyze (e.g., "1h", "30m").
-   * @returns {Promise<object[]>} A promise that fulfills with the trading analysis.
+   * @param {string} interval - The time interval to analyze (e.g., "1h").
+   * @return {Promise<object[]>} A promise that fulfills with the
+   *   trading analysis.
    */
   static async computeTrades(interval) {
     const results = await Promise.allSettled(
@@ -61,17 +67,17 @@ class MarketBot {
    * @static
    * @async
    * @param {string} symbol - The trading pair symbol (e.g., "BTCUSDT").
-   * @param {string} interval - The time interval to analyze (e.g., "1h", "30m").
-   * @returns {Promise<object>} A promise that fulfills with the computed trade.
+   * @param {string} interval - The time interval to analyze (e.g., "1h").
+   * @return {Promise<object>} A promise that fulfills with the computed trade.
    */
   static async computeTrade(symbol, interval) {
     const pair = new TradingPair(symbol, interval);
+
     await pair.initialize();
 
     const ta = new TAEngine(pair);
-    const analysis = await ta.analyze();
 
-    return analysis;
+    return ta.analyze();
   }
 
   /**
@@ -79,7 +85,7 @@ class MarketBot {
    *
    * @static
    * @param {object[]} trades - List of trades to be sorted.
-   * @returns {object[]} The sorted list of trades.
+   * @return {object[]} The sorted list of trades.
    */
   static sortTrades(trades) {
     return trades.sort((a, b) => b.score - a.score);

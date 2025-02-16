@@ -3,7 +3,7 @@ const EMA = require("./EMA");
 const MACD = require("./MACD");
 const IchimokuCloud = require("./IchimokuCloud");
 
-module.exports = { 
+module.exports = {
   ADX,
   EMA,
   MACD,

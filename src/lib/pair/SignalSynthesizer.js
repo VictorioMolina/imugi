@@ -1,4 +1,4 @@
-const { 
+const {
   SIGNALS,
   SIGNAL_WEIGHTS,
   SIGNAL_RELIABILITY_THRESHOLDS,
@@ -20,7 +20,7 @@ class SignalSynthesizer {
    * @static
    * @param {object} signals - Mapping of indicators to their
    *   respective signals.
-   * @returns {string} The final computed trading signal.
+   * @return {string} The final computed trading signal.
    */
   static compute(signals) {
     const scores = Object.values(SIGNALS).reduce(
@@ -50,7 +50,7 @@ class SignalSynthesizer {
    * @static
    * @param {object} scores - The scores assigned to each signal type.
    * @param {number} totalWeight - The total weight of all indicators.
-   * @returns {string} The final trading signal after resolving conflicts.
+   * @return {string} The final trading signal after resolving conflicts.
    */
   static #resolveContradictions(scores, totalWeight) {
     if (totalWeight === 0) {
@@ -62,6 +62,7 @@ class SignalSynthesizer {
       Object.entries(scores).map(([key, value]) => [key, value / totalWeight])
     );
 
+    // eslint-disable-next-line object-curly-newline
     const { STRONG_BUY, BUY, HOLD, SELL, STRONG_SELL } = normalizedScores;
 
     // 1. Hold suggestion

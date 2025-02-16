@@ -8,7 +8,7 @@ const { SIGNALS, RSI_THRESHOLDS } = require("../../../utils");
  * the speed and change of price movements. It is typically used to identify
  * overbought or oversold conditions in a market, helping traders decide when
  * to enter or exit trades.
- * 
+ *
  * @class
  * @extends {Indicator}
  */
@@ -28,7 +28,7 @@ class RSI extends Indicator {
   /**
    * Calculates the Relative Strength Index (RSI).
    *
-   * @returns {number} The most recent RSI value, in a range from 0 to 100.
+   * @return {number} The most recent RSI value, in a range from 0 to 100.
    */
   _calculate() {
     const input = { values: this.values, ...this.params };
@@ -43,7 +43,7 @@ class RSI extends Indicator {
    * trading signal.
    *
    * @param {object} [thresholds] - Thresholds for the RSI signal.
-   * @returns {string} The signal based on the RSI.
+   * @return {string} The signal based on the RSI.
    */
   signal(thresholds = RSI_THRESHOLDS) {
     const rsi = this.value;

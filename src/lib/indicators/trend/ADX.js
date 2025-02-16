@@ -18,7 +18,7 @@ const { SIGNALS, ADX_THRESHOLDS } = require("../../../utils");
  *
  * - MDI (Negative Directional Indicator) measures the strength of the
  *   downward trend.
- * 
+ *
  * @class
  * @extends {Indicator}
  */
@@ -41,7 +41,7 @@ class ADX extends Indicator {
   /**
    * Calculates the Average Directional Index (ADX).
    *
-   * @returns {object} The most recent ADX, PDI, and MDI values.
+   * @return {object} The most recent ADX, PDI, and MDI values.
    */
   _calculate() {
     const input = {
@@ -63,10 +63,10 @@ class ADX extends Indicator {
    * corresponding trading signal.
    *
    * @param {object} [thresholds] - Thresholds for the ADX signal.
-   * @returns {string} The signal based on the ADX.
+   * @return {string} The signal based on the ADX.
    */
   signal(thresholds = ADX_THRESHOLDS) {
-    const { adx, pdi, mdi } = this.value; 
+    const { adx, pdi, mdi } = this.value;
     const bullishTrend = pdi > mdi;
     const bearishTrend = pdi < mdi;
 
@@ -81,7 +81,7 @@ class ADX extends Indicator {
     }
 
     // Strong and bearish trend, suggesting a strong sell opportunity
-    if (bearishTrend  && adx >= thresholds.strongTrend) {
+    if (bearishTrend && adx >= thresholds.strongTrend) {
       return SIGNALS.STRONG_SELL;
     }
 

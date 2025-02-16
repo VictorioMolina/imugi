@@ -3,10 +3,10 @@
  * decimal places.
  *
  * @param {number} score - The score to be adjusted.
- * @returns {number} The clamped score.
+ * @return {number} The clamped score.
  */
 module.exports = (score) => {
-  let adjustedScore = Math.min(100, score * 10);
+  const adjustedScore = Math.min(100, score * 10);
 
   return parseFloat(adjustedScore.toFixed(2));
-}
+};

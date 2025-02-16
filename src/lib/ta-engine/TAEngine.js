@@ -1,3 +1,4 @@
+/* eslint-disable object-curly-newline */
 const {
   SIGNALS,
   SIGNAL_WEIGHTS,
@@ -27,7 +28,8 @@ class TAEngine {
    * Initializes the TAEngine for a given trading pair.
    *
    * @constructor
-   * @param {object} tradingPair - Object containing trading pair data and indicators.
+   * @param {object} tradingPair - Object containing trading pair data
+   *   and indicators.
    */
   constructor(tradingPair) {
     this.tradingPair = tradingPair;
@@ -40,7 +42,7 @@ class TAEngine {
    * Analyzes the trading pair and calculates TP, SL, and score.
    *
    * @param {number} [rrr=3/2] - The risk-reward ratio.
-   * @returns {object} Trade configuration with computed parameters.
+   * @return {object} Trade configuration with computed parameters.
    */
   analyze(rrr = 3 / 2) {
     this.takeProfit = this.#calculateTakeProfit();
@@ -63,7 +65,7 @@ class TAEngine {
    * Computes the take-profit (TP) level based on ATR and market volatility.
    *
    * @private
-   * @returns {number} The calculated TP level.
+   * @return {number} The calculated TP level.
    */
   #calculateTakeProfit() {
     const { lastPrice, signal, indicators } = this.tradingPair;
@@ -88,7 +90,7 @@ class TAEngine {
    *
    * @private
    * @param {number} [rrr=3/2] - The risk-reward ratio.
-   * @returns {number} The calculated SL level.
+   * @return {number} The calculated SL level.
    */
   #calculateStopLoss(rrr = 3 / 2) {
     const { lastPrice, signal } = this.tradingPair;
@@ -109,8 +111,9 @@ class TAEngine {
   /**
    * Computes a confidence score based on technical indicators and volatility.
    *
+   * @todo Handle conditions as specific calculable properties of each indicator
    * @private
-   * @returns {number} The final score (0-100).
+   * @return {number} The final score (0-100).
    */
   #calculateScore() {
     const { lastPrice, signal, indicators } = this.tradingPair;
@@ -126,16 +129,16 @@ class TAEngine {
 
     // EMA
     if (
-      (bullish && lastPrice < ema.value) ||
-      (bearish && lastPrice > ema.value)
+      bullish && lastPrice < ema.value ||
+      bearish && lastPrice > ema.value
     ) {
       score += INDICATOR_WEIGHTS.ema;
     }
 
     // MACD
     if (
-      (bullish && macd.value.histogram > MACD_THRESHOLD) ||
-      (bearish && macd.value.histogram < -MACD_THRESHOLD)
+      bullish && macd.value.histogram > MACD_THRESHOLD ||
+      bearish && macd.value.histogram < -MACD_THRESHOLD
     ) {
       score += INDICATOR_WEIGHTS.macd;
     }
@@ -147,40 +150,41 @@ class TAEngine {
 
     // Ichimoku Cloud
     if (
-      (bullish &&
+      bullish &&
         lastPrice >
           Math.max(ichimoku.value.senkou.spanA, ichimoku.value.senkou.spanB) &&
         ichimoku.value.tenkanSen > ichimoku.value.kijunSen &&
-        ichimoku.value.chikouSpan > ichimoku.value.kijunSen) ||
-      (bearish &&
+        ichimoku.value.chikouSpan > ichimoku.value.kijunSen ||
+
+      bearish &&
         lastPrice <
           Math.min(ichimoku.value.senkou.spanA, ichimoku.value.senkou.spanB) &&
         ichimoku.value.tenkanSen < ichimoku.value.kijunSen &&
-        ichimoku.value.chikouSpan < ichimoku.value.kijunSen)
+        ichimoku.value.chikouSpan < ichimoku.value.kijunSen
     ) {
       score += INDICATOR_WEIGHTS.ichimoku;
     }
 
     // RSI
     if (
-      (bullish && rsi.value <= RSI_THRESHOLDS.sold) ||
-      (bearish && rsi.value >= RSI_THRESHOLDS.bought)
+      bullish && rsi.value <= RSI_THRESHOLDS.sold ||
+      bearish && rsi.value >= RSI_THRESHOLDS.bought
     ) {
       score += INDICATOR_WEIGHTS.rsi;
     }
 
     // Stochastic RSI
     if (
-      (bullish && stochRSI.value.stochRSI <= STOCH_RSI_THRESHOLDS.sold) ||
-      (bearish && stochRSI.value.stochRSI >= STOCH_RSI_THRESHOLDS.bought)
+      bullish && stochRSI.value.stochRSI <= STOCH_RSI_THRESHOLDS.sold ||
+      bearish && stochRSI.value.stochRSI >= STOCH_RSI_THRESHOLDS.bought
     ) {
       score += INDICATOR_WEIGHTS.stochRSI;
     }
 
     // Bollinger
     if (
-      (bullish && lastPrice < bollinger.value.lowerBand) ||
-      (bearish && lastPrice > bollinger.value.upperBand)
+      bullish && lastPrice < bollinger.value.lowerBand ||
+      bearish && lastPrice > bollinger.value.upperBand
     ) {
       score += INDICATOR_WEIGHTS.bollinger;
     }

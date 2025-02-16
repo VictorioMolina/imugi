@@ -3,7 +3,7 @@
  *
  * @param {(number|string)[]} candle - A raw array of numbers representing
  *   a single candlestick.
- * @returns {object} An object representing the parsed candlestick.
+ * @return {object} An object representing the parsed candlestick.
  */
 module.exports = (candle) => ({
   timestamp: candle[0], // Open time
@@ -12,4 +12,4 @@ module.exports = (candle) => ({
   low: parseFloat(candle[3]),
   close: parseFloat(candle[4]),
   volume: parseFloat(candle[5]),
-})
+});

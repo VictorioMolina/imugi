@@ -15,7 +15,7 @@ const { SIGNALS, MACD_THRESHOLD } = require("../../../utils");
  *
  * - histogram: The difference between the macd line and the signal line,
  *   used to identify momentum strength.
- * 
+ *
  * @class
  * @extends {Indicator}
  */
@@ -36,7 +36,7 @@ class MACD extends Indicator {
    * Calculates the Moving Average Convergence Divergence (MACD) for a
    * given set of values.
    *
-   * @returns {object} The most recent MACD, signal, and histogram values.
+   * @return {object} The most recent MACD, signal, and histogram values.
    */
   _calculate() {
     const input = { values: this.values, ...this.params };
@@ -51,8 +51,9 @@ class MACD extends Indicator {
    * Analyzes the MACD indicator and returns the corresponding trading signal.
    *
    * @todo Avoid using a static threshold.
-   * @param {number} [threshold=0.05] - Threshold used to define a strong signal.
-   * @returns {string} The signal based on the MACD.
+   * @param {number} [threshold=0.05] - Threshold used to define a
+   *   strong signal.
+   * @return {string} The signal based on the MACD.
    */
   signal(threshold = MACD_THRESHOLD) {
     const { macd, signal, histogram } = this.value;

@@ -4,7 +4,7 @@
  *
  * This abstract class provides a foundation for implementing specific
  * indicator logic by requiring subclasses to define their own calculation,
- * signal generation, and logging mechanisms. 
+ * signal generation, and logging mechanisms.
  *
  * Indicators typically analyze a series of values, such as pair prices or
  * trading volumes, based on specific parameters to produce meaningful insights
@@ -31,7 +31,7 @@ class Indicator {
    *
    * @abstract
    * @protected
-   * @returns {*} The result of the indicator's calculation.
+   * @return {*} The result of the indicator's calculation.
    * @throws _calculate() must be implemented in a subclass.
    */
   _calculate() {
@@ -39,13 +39,13 @@ class Indicator {
   }
 
   /**
-   * Generates a trading signal based on the indicator's analysis, 
+   * Generates a trading signal based on the indicator's analysis,
    * following established theories of market analysis.
    *
    * @abstract
    * @param {...any} [args] - Optional parameters to customize
    *   the signal generation
-   * @returns {string} The signal generated based on the indicator's state.
+   * @return {string} The signal generated based on the indicator's state.
    * @throws signal() must be implemented in a subclass.
    */
   signal(...args) {
@@ -55,7 +55,7 @@ class Indicator {
   /**
    * Gets the list of values used for the indicator's calculations.
    *
-   * @returns {number[]} The numerical data (typically closing prices) used
+   * @return {number[]} The numerical data (typically closing prices) used
    *   by the indicator.
    */
   get values() {
@@ -65,7 +65,7 @@ class Indicator {
   /**
    * Gets the current configuration parameters of the indicator.
    *
-   * @returns {object} The indicator params.
+   * @return {object} The indicator params.
    */
   get params() {
     return this._params;

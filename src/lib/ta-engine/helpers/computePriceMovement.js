@@ -13,7 +13,7 @@
  * @param {number} volatility - A factor that represents the relative
  *   volatility of the market, derived from comparing Bollinger Bands width to
  *   the ATR.
- * @returns {number} The estimated price movement, indicating the expected
+ * @return {number} The estimated price movement, indicating the expected
  *   range of price changes based on the current volatility conditions.
  */
 module.exports = (atr, volatility) => atr * (1 + volatility);
