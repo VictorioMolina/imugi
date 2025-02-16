@@ -1,4 +1,10 @@
 <!-- markdownlint-disable no-duplicate-heading -->
+# 1.0.4 (2025-02-17)
+
+## Fixes
+
+* tp-sl: fix heuristic behind TP and SL computation
+
 # 1.0.3 (2025-02-16)
 
 ## Feature
