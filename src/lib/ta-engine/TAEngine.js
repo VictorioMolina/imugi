@@ -1,6 +1,7 @@
 /* eslint-disable object-curly-newline */
 const {
-  SIGNALS,
+  BULLISH_SIGNALS,
+  BEARISH_SIGNALS,
   SIGNAL_WEIGHTS,
   INDICATOR_WEIGHTS,
   RSI_THRESHOLDS,
@@ -8,11 +9,7 @@ const {
   STOCH_RSI_THRESHOLDS,
   MACD_THRESHOLD,
 } = require("../../utils");
-const {
-  clampScore,
-  computePriceMovement,
-  computeVolatility,
-} = require("./helpers");
+const { clampScore, computeVolatility } = require("./helpers");
 
 /**
  * Trading Analysis Engine (TAEngine) for evaluating trade opportunities.
@@ -21,7 +18,9 @@ const {
  * multiple technical indicators.
  *
  * @class
- * @todo Compute TP and SL in a dynamic and mathematically correct way.
+ * @todo Refactoring: Use atomic helpers (DRY).
+ * @todo Refactoring: Handle conditions as specific calculable properties of
+ *   each indicator.
  */
 class TAEngine {
   /**
@@ -41,10 +40,10 @@ class TAEngine {
   /**
    * Analyzes the trading pair and calculates TP, SL, and score.
    *
-   * @param {number} [rrr=3/2] - The risk-reward ratio.
+   * @param {number} [rrr=1/2] - The desired risk-reward ratio.
    * @return {object} Trade configuration with computed parameters.
    */
-  analyze(rrr = 3 / 2) {
+  analyze(rrr = 1 / 2) {
     this.takeProfit = this.#calculateTakeProfit();
     this.stopLoss = this.#calculateStopLoss(rrr);
     this.score = this.#calculateScore();
@@ -62,56 +61,64 @@ class TAEngine {
   }
 
   /**
-   * Computes the take-profit (TP) level based on ATR and market volatility.
+   * Computes the take-profit (TP) level based on EMA and market volatility.
    *
    * @private
    * @return {number} The calculated TP level.
    */
   #calculateTakeProfit() {
     const { lastPrice, signal, indicators } = this.tradingPair;
-    const { atr, bollinger } = indicators;
-    const volatility = computeVolatility(atr.value, bollinger.value);
-    const delta = computePriceMovement(atr.value, volatility);
-    const bullishSignals = [SIGNALS.BUY, SIGNALS.STRONG_BUY];
+    const { ema, atr, bollinger } = indicators;
+    const volatilityFactor = computeVolatility(atr.value, bollinger.value);
 
-    if (signal === SIGNALS.HOLD) {
-      return lastPrice;
+    if (BULLISH_SIGNALS.includes(signal)) {
+      const origin = Math.max(lastPrice, ema.value);
+      const tp = origin + volatilityFactor * atr.value;
+
+      return Math.min(tp, bollinger.value.upperBand);
     }
 
-    if (bullishSignals.includes(signal)) {
-      return Math.max(lastPrice + delta, 0);
+    if (BEARISH_SIGNALS.includes(signal)) {
+      const origin = Math.min(lastPrice, ema.value);
+      const tp = origin - volatilityFactor * atr.value;
+
+      return Math.max(tp, bollinger.value.lowerBand);
     }
 
-    return Math.max(lastPrice - delta, 0);
+    return lastPrice;
   }
 
   /**
    * Computes the stop-loss (SL) level to maintain a rational risk-reward ratio.
    *
    * @private
-   * @param {number} [rrr=3/2] - The risk-reward ratio.
+   * @param {number} [rrr=1/2] - The desired risk-reward ratio.
    * @return {number} The calculated SL level.
    */
-  #calculateStopLoss(rrr = 3 / 2) {
-    const { lastPrice, signal } = this.tradingPair;
-    const delta = Math.abs(this.takeProfit - lastPrice) / rrr;
-    const bullishSignals = [SIGNALS.BUY, SIGNALS.STRONG_BUY];
+  #calculateStopLoss(rrr = 1 / 2) {
+    const { lastPrice, signal, indicators } = this.tradingPair;
+    const { bollinger } = indicators;
+    const tp = this.takeProfit;
+    const tpDistance = Math.abs(tp - lastPrice);
 
-    if (signal === SIGNALS.HOLD) {
-      return lastPrice;
+    if (BULLISH_SIGNALS.includes(signal)) {
+      const sl = lastPrice - tpDistance * rrr;
+
+      return Math.max(sl, bollinger.value.lowerBand);
     }
 
-    if (bullishSignals.includes(signal)) {
-      return Math.max(lastPrice - delta, 0);
+    if (BEARISH_SIGNALS.includes(signal)) {
+      const sl = lastPrice + tpDistance * rrr;
+
+      return Math.min(sl, bollinger.value.upperBand);
     }
 
-    return Math.max(lastPrice + delta, 0);
+    return lastPrice;
   }
 
   /**
    * Computes a confidence score based on technical indicators and volatility.
    *
-   * @todo Handle conditions as specific calculable properties of each indicator
    * @private
    * @return {number} The final score (0-100).
    */
@@ -120,10 +127,8 @@ class TAEngine {
     const { ema, macd, adx, ichimoku, rsi, stochRSI, atr, bollinger } =
       indicators;
 
-    const bullishSignals = [SIGNALS.BUY, SIGNALS.STRONG_BUY];
-    const bearishSignals = [SIGNALS.SELL, SIGNALS.STRONG_SELL];
-    const bullish = bullishSignals.includes(signal);
-    const bearish = bearishSignals.includes(signal);
+    const bullish = BULLISH_SIGNALS.includes(signal);
+    const bearish = BEARISH_SIGNALS.includes(signal);
 
     let score = SIGNAL_WEIGHTS[signal];
 

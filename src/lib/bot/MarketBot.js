@@ -1,6 +1,12 @@
 const TradingPair = require("../pair");
 const TAEngine = require("../ta-engine");
-const { symbols, SIGNALS, MARKET_SENTIMENT } = require("../../utils");
+const {
+  symbols,
+  SIGNALS,
+  BEARISH_SIGNALS,
+  BULLISH_SIGNALS,
+  MARKET_SENTIMENT,
+} = require("../../utils");
 
 /**
  * Handles market sentiment analysis and trade computation.
@@ -16,18 +22,14 @@ class MarketBot {
    * @return {string} The market sentiment.
    */
   static computeSentiment(trades) {
-    const bearishSignals = [SIGNALS.STRONG_SELL, SIGNALS.SELL];
-    const bullishSignals = [SIGNALS.STRONG_BUY, SIGNALS.BUY];
-    const neutralSignal = SIGNALS.HOLD;
-
     const shortsCount =
-      trades.filter(({ signal }) => bearishSignals.includes(signal)).length;
+      trades.filter(({ signal }) => BEARISH_SIGNALS.includes(signal)).length;
 
     const longsCount =
-      trades.filter(({ signal }) => bullishSignals.includes(signal)).length;
+      trades.filter(({ signal }) => BULLISH_SIGNALS.includes(signal)).length;
 
     const holdCount =
-      trades.filter(({ signal }) => signal === neutralSignal).length;
+      trades.filter(({ signal }) => signal === SIGNALS.HOLD).length;
 
     if (shortsCount > longsCount + holdCount) {
       return MARKET_SENTIMENT.BEARISH;

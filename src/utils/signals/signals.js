@@ -5,6 +5,8 @@ exports.SIGNALS = {
   SELL: "SELL",
   STRONG_SELL: "STRONG_SELL",
 };
+exports.BEARISH_SIGNALS = [exports.SIGNALS.SELL, exports.SIGNALS.STRONG_SELL];
+exports.BULLISH_SIGNALS = [exports.SIGNALS.BUY, exports.SIGNALS.STRONG_BUY];
 exports.SIGNAL_WEIGHTS = {
   STRONG_BUY: 2.5,
   BUY: 2,
