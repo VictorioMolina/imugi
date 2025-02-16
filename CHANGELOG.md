@@ -1,4 +1,18 @@
 <!-- markdownlint-disable no-duplicate-heading -->
+# 1.0.3 (2025-02-16)
+
+## Feature
+
+* feat(ichimoku): add Ichimoku Cloud indicator
+
+## Refactoring
+
+* lint(code): integrate eslint
+
+## Documentation
+
+* docs(roadmap): create to-do list
+
 # 1.0.2 (2025-02-12)
 
 ## Chore
