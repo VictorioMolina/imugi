@@ -1,10 +1,14 @@
 const express = require("express");
-const app = express();
-const port = 3000;
+const cors = require("cors");
 
 const { symbols, sleep } = require("./utils");
 const Logger = require("./lib/logger");
 const MarketBot = require("./lib/bot");
+
+const app = express();
+const port = 3000;
+
+app.use(cors());
 
 app.get("/signals", async (req, res) => {
   const { interval = "1h" } = req.query;
@@ -34,9 +38,9 @@ app.get("/signals", async (req, res) => {
     await sleep(1500);
     Logger.logTrades(trades);
 
-    res.json({ success: true });
-  } catch (error) {
-    console.error("Error generating crypto signals:", error);
+    res.json({ success: true, data: trades });
+  } catch (err) {
+    console.error("Error generating crypto signals:", err);
     res.status(500).json({ success: false, error: "Failed to generate signals" });
   }
 });

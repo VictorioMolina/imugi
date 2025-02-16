@@ -19,10 +19,11 @@ exports.STOCH_RSI_THRESHOLDS = {
   overbought: 90,
 };
 exports.INDICATOR_WEIGHTS = {
-  ema: 2.5,
-  macd: 2.5,
+  ema: 1,
+  macd: 1.8,
   adx: 1,
-  rsi: 2,
-  stochRSI: 0.5,
-  bollinger: 1.5,
+  ichimoku: 2.2,
+  rsi: 1.7,
+  stochRSI: 1.2,
+  bollinger: 1.1,
 };

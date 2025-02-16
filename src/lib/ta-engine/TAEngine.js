@@ -18,7 +18,7 @@ const {
  *
  * Computes stop-loss (SL), take-profit (TP), and a confidence score based on
  * multiple technical indicators.
- * 
+ *
  * @class
  * @todo Compute TP and SL in a dynamic and mathematically correct way.
  */
@@ -42,7 +42,7 @@ class TAEngine {
    * @param {number} [rrr=3/2] - The risk-reward ratio.
    * @returns {object} Trade configuration with computed parameters.
    */
-  analyze(rrr = 3/2) {
+  analyze(rrr = 3 / 2) {
     this.takeProfit = this.#calculateTakeProfit();
     this.stopLoss = this.#calculateStopLoss(rrr);
     this.score = this.#calculateScore();
@@ -90,9 +90,9 @@ class TAEngine {
    * @param {number} [rrr=3/2] - The risk-reward ratio.
    * @returns {number} The calculated SL level.
    */
-  #calculateStopLoss(rrr = 3/2) {
+  #calculateStopLoss(rrr = 3 / 2) {
     const { lastPrice, signal } = this.tradingPair;
-    const delta = Math.abs((this.takeProfit - lastPrice)) / rrr;
+    const delta = Math.abs(this.takeProfit - lastPrice) / rrr;
     const bullishSignals = [SIGNALS.BUY, SIGNALS.STRONG_BUY];
 
     if (signal === SIGNALS.HOLD) {
@@ -114,7 +114,8 @@ class TAEngine {
    */
   #calculateScore() {
     const { lastPrice, signal, indicators } = this.tradingPair;
-    const { ema, macd, rsi, stochRSI, adx, atr, bollinger } = indicators;
+    const { ema, macd, adx, ichimoku, rsi, stochRSI, atr, bollinger } =
+      indicators;
 
     const bullishSignals = [SIGNALS.BUY, SIGNALS.STRONG_BUY];
     const bearishSignals = [SIGNALS.SELL, SIGNALS.STRONG_SELL];
@@ -142,6 +143,22 @@ class TAEngine {
     // ADX
     if (adx.value.adx >= ADX_THRESHOLDS.strongTrend) {
       score += INDICATOR_WEIGHTS.adx;
+    }
+
+    // Ichimoku Cloud
+    if (
+      (bullish &&
+        lastPrice >
+          Math.max(ichimoku.value.senkou.spanA, ichimoku.value.senkou.spanB) &&
+        ichimoku.value.tenkanSen > ichimoku.value.kijunSen &&
+        ichimoku.value.chikouSpan > ichimoku.value.kijunSen) ||
+      (bearish &&
+        lastPrice <
+          Math.min(ichimoku.value.senkou.spanA, ichimoku.value.senkou.spanB) &&
+        ichimoku.value.tenkanSen < ichimoku.value.kijunSen &&
+        ichimoku.value.chikouSpan < ichimoku.value.kijunSen)
+    ) {
+      score += INDICATOR_WEIGHTS.ichimoku;
     }
 
     // RSI

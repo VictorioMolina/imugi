@@ -10,6 +10,7 @@ const {
   RSI,
   StochasticRSI,
   BollingerBands,
+  IchimokuCloud,
 } = require("../indicators");
 
 /**
@@ -81,11 +82,13 @@ class TradingPair {
    * @returns {void}
    */
   #initializeTrendIndicators() {
-    const { ema, macd, adx } = this.#indicatorParams;
+    const { ema, macd, adx, ichimoku } = this.#indicatorParams;
 
     this.indicators.ema = new EMA(this.closes, ema);
     this.indicators.macd = new MACD(this.closes, macd);
     this.indicators.adx = new ADX(this.closes, this.highs, this.lows, adx);
+    this.indicators.ichimoku =
+      new IchimokuCloud(this.closes, this.highs, this.lows, ichimoku);
   }
 
   /**
@@ -140,6 +143,7 @@ class TradingPair {
       rsi: this.indicators.rsi.signal(),
       stochRSI: this.indicators.stochRSI.signal(),
       bollinger: this.indicators.bollinger.signal(this.lastPrice),
+      ichimoku: this.indicators.ichimoku.signal(this.lastPrice),
     };
 
     this.signal = SignalSynthesizer.compute(signals);

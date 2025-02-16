@@ -11,6 +11,12 @@ const indicatorParams = Object.freeze({
     adx: {
       period: 5,
     },
+    ichimoku: {
+      conversionPeriod: 3,
+      basePeriod: 9,
+      spanPeriod: 18,
+      displacement: 9,
+    },
     rsi: {
       period: 5,
     },
@@ -39,6 +45,12 @@ const indicatorParams = Object.freeze({
     },
     adx: {
       period: 7,
+    },
+    ichimoku: {
+      conversionPeriod: 7,
+      basePeriod: 14,
+      spanPeriod: 28,
+      displacement: 14,
     },
     rsi: {
       period: 7,
@@ -69,6 +81,12 @@ const indicatorParams = Object.freeze({
     adx: {
       period: 8,
     },
+    ichimoku: {
+      conversionPeriod: 8,
+      basePeriod: 24,
+      spanPeriod: 48,
+      displacement: 24,
+    },
     rsi: {
       period: 8,
     },
@@ -97,6 +115,12 @@ const indicatorParams = Object.freeze({
     },
     adx: {
       period: 9,
+    },
+    ichimoku: {
+      conversionPeriod: 10,
+      basePeriod: 30,
+      spanPeriod: 60,
+      displacement: 30,
     },
     rsi: {
       period: 9,
@@ -127,6 +151,12 @@ const indicatorParams = Object.freeze({
     adx: {
       period: 12,
     },
+    ichimoku: {
+      conversionPeriod: 12,
+      basePeriod: 36,
+      spanPeriod: 72,
+      displacement: 36,
+    },
     rsi: {
       period: 12,
     },
@@ -155,6 +185,12 @@ const indicatorParams = Object.freeze({
     },
     adx: {
       period: 15,
+    },
+    ichimoku: {
+      conversionPeriod: 15,
+      basePeriod: 45,
+      spanPeriod: 90,
+      displacement: 45,
     },
     rsi: {
       period: 15,
@@ -185,6 +221,12 @@ const indicatorParams = Object.freeze({
     adx: {
       period: 18,
     },
+    ichimoku: {
+      conversionPeriod: 24,
+      basePeriod: 48,
+      spanPeriod: 96,
+      displacement: 48,
+    },
     rsi: {
       period: 18,
     },
@@ -213,6 +255,12 @@ const indicatorParams = Object.freeze({
     },
     adx: {
       period: 22,
+    },
+    ichimoku: {
+      conversionPeriod: 18,
+      basePeriod: 54,
+      spanPeriod: 108,
+      displacement: 54,
     },
     rsi: {
       period: 22,
@@ -243,6 +291,12 @@ const indicatorParams = Object.freeze({
     adx: {
       period: 26,
     },
+    ichimoku: {
+      conversionPeriod: 20,
+      basePeriod: 60,
+      spanPeriod: 120,
+      displacement: 60,
+    },
     rsi: {
       period: 26,
     },
@@ -271,6 +325,12 @@ const indicatorParams = Object.freeze({
     },
     adx: {
       period: 30,
+    },
+    ichimoku: {
+      conversionPeriod: 24,
+      basePeriod: 72,
+      spanPeriod: 144,
+      displacement: 72,
     },
     rsi: {
       period: 30,
@@ -301,6 +361,12 @@ const indicatorParams = Object.freeze({
     adx: {
       period: 34,
     },
+    ichimoku: {
+      conversionPeriod: 27,
+      basePeriod: 81,
+      spanPeriod: 162,
+      displacement: 81,
+    },
     rsi: {
       period: 34,
     },
@@ -329,6 +395,12 @@ const indicatorParams = Object.freeze({
     },
     adx: {
       period: 40,
+    },
+    ichimoku: {
+      conversionPeriod: 30,
+      basePeriod: 90,
+      spanPeriod: 180,
+      displacement: 90,
     },
     rsi: {
       period: 40,
@@ -359,6 +431,12 @@ const indicatorParams = Object.freeze({
     adx: {
       period: 50,
     },
+    ichimoku: {
+      conversionPeriod: 9,
+      basePeriod: 26,
+      spanPeriod: 52,
+      displacement: 26,
+    },
     rsi: {
       period: 50,
     },
@@ -388,6 +466,12 @@ const indicatorParams = Object.freeze({
     adx: {
       period: 60,
     },
+    ichimoku: {
+      conversionPeriod: 12,
+      basePeriod: 36,
+      spanPeriod: 72,
+      displacement: 36,
+    },
     rsi: {
       period: 60,
     },
@@ -416,6 +500,12 @@ const indicatorParams = Object.freeze({
     },
     adx: {
       period: 70,
+    },
+    ichimoku: {
+      conversionPeriod: 4,
+      basePeriod: 13,
+      spanPeriod: 26,
+      displacement: 13,
     },
     rsi: {
       period: 70,
