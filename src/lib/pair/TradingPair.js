@@ -147,7 +147,7 @@ class TradingPair {
       ichimoku: this.indicators.ichimoku.signal(this.lastPrice),
     };
 
-    this.signal = SignalSynthesizer.compute(signals);
+    this.signal = SignalSynthesizer.compute(signals, this.interval);
   }
 }
 

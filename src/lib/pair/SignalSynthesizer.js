@@ -20,9 +20,10 @@ class SignalSynthesizer {
    * @static
    * @param {object} signals - Mapping of indicators to their
    *   respective signals.
+   * @param {string} [interval="1h"] - The candlestick interval.
    * @return {string} The final computed trading signal.
    */
-  static compute(signals) {
+  static compute(signals, interval = "1h") {
     const scores = Object.values(SIGNALS).reduce(
       (acc, signal) => ({ ...acc, [signal]: 0 }),
       {}
@@ -31,7 +32,7 @@ class SignalSynthesizer {
     let totalWeight = 0;
 
     for (const [indicator, signal] of Object.entries(signals)) {
-      const indicatorWeight = INDICATOR_WEIGHTS[indicator] ?? 0;
+      const indicatorWeight = INDICATOR_WEIGHTS[interval][indicator] ?? 0;
       const signalWeight = SIGNAL_WEIGHTS[signal] ?? 0;
 
       scores[signal] += indicatorWeight * signalWeight;

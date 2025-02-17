@@ -1,3 +1,4 @@
+/* eslint-disable max-len */
 /* eslint-disable object-curly-newline */
 const {
   BULLISH_SIGNALS,
@@ -130,6 +131,7 @@ class TAEngine {
     const bullish = BULLISH_SIGNALS.includes(signal);
     const bearish = BEARISH_SIGNALS.includes(signal);
 
+    const indicatorWeights = INDICATOR_WEIGHTS[this.tradingPair.interval];
     let score = SIGNAL_WEIGHTS[signal];
 
     // EMA
@@ -137,7 +139,7 @@ class TAEngine {
       bullish && lastPrice < ema.value ||
       bearish && lastPrice > ema.value
     ) {
-      score += INDICATOR_WEIGHTS.ema;
+      score += indicatorWeights.ema;
     }
 
     // MACD
@@ -145,12 +147,12 @@ class TAEngine {
       bullish && macd.value.histogram > MACD_THRESHOLD ||
       bearish && macd.value.histogram < -MACD_THRESHOLD
     ) {
-      score += INDICATOR_WEIGHTS.macd;
+      score += indicatorWeights.macd;
     }
 
     // ADX
     if (adx.value.adx >= ADX_THRESHOLDS.strongTrend) {
-      score += INDICATOR_WEIGHTS.adx;
+      score += indicatorWeights.adx;
     }
 
     // Ichimoku Cloud
@@ -167,7 +169,7 @@ class TAEngine {
         ichimoku.value.tenkanSen < ichimoku.value.kijunSen &&
         ichimoku.value.chikouSpan < ichimoku.value.kijunSen
     ) {
-      score += INDICATOR_WEIGHTS.ichimoku;
+      score += indicatorWeights.ichimoku;
     }
 
     // RSI
@@ -175,7 +177,7 @@ class TAEngine {
       bullish && rsi.value <= RSI_THRESHOLDS.sold ||
       bearish && rsi.value >= RSI_THRESHOLDS.bought
     ) {
-      score += INDICATOR_WEIGHTS.rsi;
+      score += indicatorWeights.rsi;
     }
 
     // Stochastic RSI
@@ -183,7 +185,7 @@ class TAEngine {
       bullish && stochRSI.value.stochRSI <= STOCH_RSI_THRESHOLDS.sold ||
       bearish && stochRSI.value.stochRSI >= STOCH_RSI_THRESHOLDS.bought
     ) {
-      score += INDICATOR_WEIGHTS.stochRSI;
+      score += indicatorWeights.stochRSI;
     }
 
     // Bollinger
@@ -191,7 +193,7 @@ class TAEngine {
       bullish && lastPrice < bollinger.value.lowerBand ||
       bearish && lastPrice > bollinger.value.upperBand
     ) {
-      score += INDICATOR_WEIGHTS.bollinger;
+      score += indicatorWeights.bollinger;
     }
 
     // Volatility
