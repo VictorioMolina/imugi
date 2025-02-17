@@ -1,4 +1,10 @@
 <!-- markdownlint-disable no-duplicate-heading -->
+# 1.0.5 (2025-02-17)
+
+## Chore
+
+* weights: reweight indicators according to the trading timeframe
+
 # 1.0.4 (2025-02-17)
 
 ## Fixes
