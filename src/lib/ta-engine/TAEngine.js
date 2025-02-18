@@ -74,16 +74,20 @@ class TAEngine {
 
     if (BULLISH_SIGNALS.includes(signal)) {
       const origin = Math.max(lastPrice, ema.value);
-      const tp = origin + volatilityFactor * atr.value;
+      const takeProfit = origin + volatilityFactor * atr.value;
 
-      return Math.min(tp, bollinger.value.upperBand);
+      return lastPrice < bollinger.value.upperBand
+        ? Math.min(takeProfit, bollinger.value.upperBand)
+        : takeProfit;
     }
 
     if (BEARISH_SIGNALS.includes(signal)) {
       const origin = Math.min(lastPrice, ema.value);
-      const tp = origin - volatilityFactor * atr.value;
+      const takeProfit = origin - volatilityFactor * atr.value;
 
-      return Math.max(tp, bollinger.value.lowerBand);
+      return lastPrice > bollinger.value.lowerBand
+        ? Math.max(takeProfit, bollinger.value.lowerBand)
+        : takeProfit;
     }
 
     return lastPrice;
@@ -99,19 +103,22 @@ class TAEngine {
   #calculateStopLoss(rrr = 1 / 2) {
     const { lastPrice, signal, indicators } = this.tradingPair;
     const { bollinger } = indicators;
-    const tp = this.takeProfit;
-    const tpDistance = Math.abs(tp - lastPrice);
+    const tpDistance = Math.abs(this.takeProfit - lastPrice);
 
     if (BULLISH_SIGNALS.includes(signal)) {
-      const sl = lastPrice - tpDistance * rrr;
+      const stopLoss = lastPrice - tpDistance * rrr;
 
-      return Math.max(sl, bollinger.value.lowerBand);
+      return lastPrice > bollinger.value.lowerBand
+        ? Math.max(stopLoss, bollinger.value.lowerBand)
+        : stopLoss;
     }
 
     if (BEARISH_SIGNALS.includes(signal)) {
-      const sl = lastPrice + tpDistance * rrr;
+      const stopLoss = lastPrice + tpDistance * rrr;
 
-      return Math.min(sl, bollinger.value.upperBand);
+      return lastPrice < bollinger.value.upperBand
+        ? Math.min(stopLoss, bollinger.value.upperBand)
+        : stopLoss;
     }
 
     return lastPrice;
